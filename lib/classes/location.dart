@@ -1,4 +1,3 @@
-
 import 'dart:async';
 
 import 'package:flutter/material.dart';
@@ -8,35 +7,30 @@ import '../api/weather_api.dart';
 import '../model/weather_model.dart';
 
 class Location1 extends StatefulWidget {
-
   static var latitude;
   static var longitude;
 
-   StreamSubscription<Position>? positionStream;
-   List<WeatherModel>? weather;
-   var isLoaded = false;
+  StreamSubscription<Position>? positionStream;
+  List<WeatherModel>? weather;
+  var isLoaded = false;
 
-   // late double? www = currentPosition?.latitude.toString() as double;
-   // late double? wwwq = currentPosition?.longitude.toString() as double?;
+  // late double? www = currentPosition?.latitude.toString() as double;
+  // late double? wwwq = currentPosition?.longitude.toString() as double?;
 
-   Location1({Key? key, this.weather, this.positionStream}) : super(key: key);
-
+  Location1({Key? key, this.weather, this.positionStream}) : super(key: key);
 
   @override
   State<Location1> createState() => _Location1State();
-
-
 }
- class _Location1State extends State<Location1> {
-   Position? currentPosition;
-   var a;
+
+class _Location1State extends State<Location1> {
+  Position? currentPosition;
+  var a;
 
 // var a = Location.latitude;
 
   /// Determine the current position of the device
   void _determinePosition() async {
-
-
     // Test if lices are enabled.
     bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
     if (!serviceEnabled) {
@@ -63,7 +57,8 @@ class Location1 extends StatefulWidget {
 
     if (permission == LocationPermission.deniedForever) {
       // Permissions are denied forever, handle appropriately.
-      print('Location permissions are permanently denied, we cannot request permissions.');
+      print(
+          'Location permissions are permanently denied, we cannot request permissions.');
 
       /// open app settings so that user changes permissions
       // await Geolocator.openAppSettings();
@@ -91,8 +86,9 @@ class Location1 extends StatefulWidget {
       accuracy: LocationAccuracy.high,
       distanceFilter: 100,
     );
-    widget.positionStream = Geolocator.getPositionStream(locationSettings: locationSettings).listen(
-          (Position? position) {
+    widget.positionStream =
+        Geolocator.getPositionStream(locationSettings: locationSettings).listen(
+      (Position? position) {
         // print(position==null? 'Unknown' : '$position');
         setState(() {
           currentPosition = position;
@@ -101,13 +97,10 @@ class Location1 extends StatefulWidget {
 
           print(Location1.longitude);
           print(Location1.latitude);
-
         });
-
       },
     );
   }
-
 
   // @override
   // void dispose() {
@@ -121,14 +114,16 @@ class Location1 extends StatefulWidget {
   void initState() {
     super.initState();
     getData();
-
-
   }
 
-
   getData() async {
-    widget.weather = await WeatherApi.getWeather();
-    if(widget.weather !=null) {
+    LocationPermission permission = await Geolocator.requestPermission();
+
+    if (permission != LocationPermission.denied) {
+      final Position position = await Geolocator.getCurrentPosition();
+      widget.weather = await WeatherApi.getWeather(position);
+    }
+    if (widget.weather != null) {
       setState(() {
         widget.isLoaded = true;
       });
@@ -145,9 +140,15 @@ class Location1 extends StatefulWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            ElevatedButton(onPressed: _determinePosition, child: Text('Determine Position')),
-            SizedBox(height: 20.0,),
-            Text(currentPosition!=null? '$widget.currentPosition' : '----',),
+            ElevatedButton(
+                onPressed: _determinePosition,
+                child: Text('Determine Position')),
+            SizedBox(
+              height: 20.0,
+            ),
+            Text(
+              currentPosition != null ? '$widget.currentPosition' : '----',
+            ),
           ],
         ),
       ),

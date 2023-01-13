@@ -1,16 +1,14 @@
 import 'package:geolocator/geolocator.dart';
 import 'package:http/http.dart' as http;
-import 'package:firstflutter/classes/location.dart';
 import 'dart:async';
 import 'package:flutter/material.dart';
 
 import '../model/weather_model.dart';
 
 class WeatherApi {
-  static Future<List<WeatherModel>?> getWeather() async {
-
-    var latitude = Location1.latitude;
-    var longitude = Location1.longitude;
+  static Future<List<WeatherModel>?> getWeather(Position location) async {
+    var latitude = location.latitude;
+    var longitude = location.longitude;
 
     print(latitude);
     print(longitude);
