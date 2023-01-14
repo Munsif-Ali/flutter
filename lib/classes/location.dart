@@ -11,7 +11,7 @@ class Location1 extends StatefulWidget {
   static var longitude;
 
   StreamSubscription<Position>? positionStream;
-  List<WeatherModel>? weather;
+  WeatherModel? weather;
   var isLoaded = false;
 
   // late double? www = currentPosition?.latitude.toString() as double;
@@ -140,6 +140,18 @@ class _Location1State extends State<Location1> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
+            Card(
+              margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
+              elevation: 5,
+              child: ListTile(
+                title: Text("Temp: ${widget.weather?.main?.temp}"),
+                subtitle: Text("${widget.weather?.weather?[0]?.description}"),
+                trailing: widget.weather?.weather?[0]?.icon != null
+                    ? Image.network(
+                        "https://openweathermap.org/img/wn/${widget.weather?.weather?[0]?.icon}@2x.png")
+                    : null,
+              ),
+            ),
             ElevatedButton(
                 onPressed: _determinePosition,
                 child: Text('Determine Position')),

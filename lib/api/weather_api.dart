@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:geolocator/geolocator.dart';
 import 'package:http/http.dart' as http;
 import 'dart:async';
@@ -6,7 +8,7 @@ import 'package:flutter/material.dart';
 import '../model/weather_model.dart';
 
 class WeatherApi {
-  static Future<List<WeatherModel>?> getWeather(Position location) async {
+  static Future<WeatherModel?> getWeather(Position location) async {
     var latitude = location.latitude;
     var longitude = location.longitude;
 
@@ -20,5 +22,7 @@ class WeatherApi {
     var response = await client.get(uri);
 
     print(response.body);
+    var jsonData = jsonDecode(response.body);
+    return WeatherModel.fromJson(jsonData);
   }
 }

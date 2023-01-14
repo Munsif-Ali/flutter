@@ -19,18 +19,16 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (ctx)=> ImageFile(),
+      create: (ctx) => ImageFile(),
       child: MaterialApp(
         title: 'Flutter',
         // theme: ThemeData.dark(),
         home: Location1(),
         routes: {
-          InputPage.routeName:(ctx)=> const InputPage(),
-          DetailsPage.routeName:(ctx)=> const DetailsPage()
+          InputPage.routeName: (ctx) => const InputPage(),
+          DetailsPage.routeName: (ctx) => const DetailsPage()
         },
       ),
     );
   }
 }
-
-
