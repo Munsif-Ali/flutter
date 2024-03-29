@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:firstflutter/classes/expanded_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:http/http.dart' as http;
@@ -135,6 +136,16 @@ class _Location1State extends State<Location1> {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Geolocator"),
+        leading: IconButton(
+          onPressed: () {
+            Navigator.of(context).push(MaterialPageRoute(
+              builder: (context) {
+                return ExpandedWidget();
+              },
+            ));
+          },
+          icon: Icon(Icons.search),
+        ),
       ),
       body: Center(
         child: Column(
